@@ -2,15 +2,21 @@ package main
 
 import "fmt"
 
-func createBoard(size int) [][]string{
+type EmptySquare struct{
+	xCord 	int
+	yCord	int
+}
+
+func createBoard(size int) ([][]string, EmptySquare){
 	matrix := make([][]string, 0)
 	num := 0
+	vacant_square := EmptySquare{xCord: size - 1, yCord: size - 1}
 	for range size{
 		row := make([]string, 0)
 		for range size{
 			num++
 			if num == size * size{
-				row = append(row, "  ")
+				row = append(row, "--")
 				break
 			}
 			formatNum := fmt.Sprintf("%.2d", num)
@@ -18,7 +24,7 @@ func createBoard(size int) [][]string{
 		}
 		matrix = append(matrix, row )
 	}
-	return matrix
+	return matrix, vacant_square
 }
 
 func displayBoard(matrix [][]string) string {
@@ -29,24 +35,8 @@ func displayBoard(matrix [][]string) string {
 	return result
 }
 
-func printBoard(size int) {
-	count:= size
-	num := 0
-
-	for range count {
-		for range count{
-		num++
-		if num == count * count{
-			break
-		}
-		fmt.Printf("[%02d] ", num)		
-		}
-	fmt.Println()
-	}
-	fmt.Println("---------------")
-}
-
 func main() {
-	printBoard(3)
-	fmt.Print(displayBoard(createBoard(4)))
+	board, blank := createBoard(3)
+	fmt.Print(displayBoard(board))
+	print(board[blank.xCord][blank.yCord])
 }
