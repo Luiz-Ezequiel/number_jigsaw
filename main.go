@@ -2,30 +2,29 @@ package main
 
 import "fmt"
 
-type EmptySquare struct{
-	xCord 	int
-	yCord	int
+type EmptySquare struct {
+	xCord int
+	yCord int
 }
 
-func createBoard(size int) ([][]string, EmptySquare){
+func createBoard(size int) ([][]string, EmptySquare) {
 	matrix := make([][]string, 0)
 	num := 0
 	vacant_square := EmptySquare{xCord: size - 1, yCord: size - 1}
-	for range size{
-		row := make([]string, 0)
-		for range size{
+	
+	for range size {
+		row := make([]string, size)
+		for i := range size{
 			num++
-			if num == size * size{
-				row = append(row, "--")
-				break
-			}
 			formatNum := fmt.Sprintf("%.2d", num)
-			row = append(row, formatNum)
+			row[i] = formatNum
 		}
-		matrix = append(matrix, row )
+		matrix = append(matrix, row)
 	}
+	matrix[vacant_square.xCord][vacant_square.yCord] = "--"
 	return matrix, vacant_square
 }
+
 
 func displayBoard(matrix [][]string) string {
 	var result string
@@ -36,7 +35,7 @@ func displayBoard(matrix [][]string) string {
 }
 
 func main() {
-	board, blank := createBoard(3)
+	board, blankSquare := createBoard(5)
 	fmt.Print(displayBoard(board))
-	print(board[blank.xCord][blank.yCord])
+	fmt.Print(board[blankSquare.xCord][blankSquare.yCord])
 }
