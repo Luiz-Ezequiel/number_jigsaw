@@ -8,34 +8,35 @@ type EmptySquare struct {
 }
 
 func createBoard(size int) ([][]string, EmptySquare) {
+	// Initialize the 2D array board && set the blank square position
 	matrix := make([][]string, 0)
 	num := 0
-	vacant_square := EmptySquare{xCord: size - 1, yCord: size - 1}
-	
-	for range size {
+	vacantSquare := EmptySquare{xCord: size - 1, yCord: size - 1}
+
+	for i := 0; i < size; i++ {
 		row := make([]string, size)
-		for i := range size{
+		for j := 0; j < size; j++ {
 			num++
-			formatNum := fmt.Sprintf("%.2d", num)
-			row[i] = formatNum
+			formatNum := fmt.Sprintf("%-3.2d", num) // Format number to have same num digits and trailing space 
+			row[j] = formatNum
 		}
 		matrix = append(matrix, row)
 	}
-	matrix[vacant_square.xCord][vacant_square.yCord] = "--"
-	return matrix, vacant_square
+	// Add the identifier for the blank square
+	matrix[vacantSquare.xCord][vacantSquare.yCord] = "-- "
+	return matrix, vacantSquare
 }
-
 
 func displayBoard(matrix [][]string) string {
 	var result string
 	for _, row := range matrix {
-		result += fmt.Sprintf("%v\n", row)
+		result += fmt.Sprintf("%s\n", row)
 	}
 	return result
 }
 
 func main() {
-	board, blankSquare := createBoard(5)
+	board, blankSquare := createBoard(4)
 	fmt.Print(displayBoard(board))
 	fmt.Print(board[blankSquare.xCord][blankSquare.yCord])
 }
