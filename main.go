@@ -9,6 +9,7 @@ type EmptySquare struct {
 	xCord int
 }
 
+// Move numbers around the empty square based on imput
 func move(board [][]string, blankSquare EmptySquare, size int, direction string) ([][]string, EmptySquare, error) {
 	var newX, newY int  
 	switch direction {
@@ -43,7 +44,6 @@ func move(board [][]string, blankSquare EmptySquare, size int, direction string)
 	return board, blankSquare, nil
 }
 
-
 func createBoard(size int) ([][]string, EmptySquare) {
 	// Initialize the 2D array board && set the blank square position
 	matrix := make([][]string, 0)
@@ -72,48 +72,27 @@ func displayBoard(matrix [][]string) string {
 	return result
 }
 
+// Creates a solved puzzle and compares it to your board
+func checkBoard(board [][]string, size int) bool {
+	result := true
+	puzzleSolved, _ := createBoard(size)
+	for i := 0; i < len(board); i++ {
+		for j := 0; j < len(board[i]); j++ {
+			if puzzleSolved[i][j] != board[i][j]{
+				result = false
+			}
+		}
+	}
+	return result
+}
+
 func main() {
 	size := 3
 	board, blankSquare := createBoard(size)
-	fmt.Print(displayBoard(board))
-	fmt.Println("___________________")
-	board, blankSquare, err := move(board, blankSquare, size, "s")
-	if err != nil{
-		fmt.Print(err)
-		return
-	}
-	fmt.Print(displayBoard(board))
-	fmt.Println("___________________")
-	board, blankSquare, err = move(board, blankSquare, size, "s")
-	if err != nil{
-		fmt.Print(err)
-		return
-	}
-	fmt.Print(displayBoard(board))
-	fmt.Println("___________________")
-	board, blankSquare, err = move(board, blankSquare, size, "s")
-	if err != nil{
-		fmt.Print(err)
-		return
-	}
-	fmt.Print(displayBoard(board))
-	fmt.Println("___________________")
-	board, blankSquare, err = move(board, blankSquare, size, "d")
-	if err != nil{
-		return
-	}
-	fmt.Print(displayBoard(board))
-	fmt.Println("___________________")
-	board, blankSquare, err = move(board, blankSquare, size, "a")
-	if err != nil{
-		return
-	}
-	fmt.Print(displayBoard(board))
-	fmt.Println("___________________")
-	board, blankSquare, err = move(board, blankSquare, size, "w")
-	if err != nil{
-		return
-	}
-	fmt.Print(displayBoard(board))
-	// fmt.Print(board[blankSquare.yCord-1][blankSquare.xCord])
+	// board, blankSquare, err := move(board, blankSquare, size, "s")
+	// if err != nil{
+	// 	fmt.Print(err)
+	// }
+	fmt.Println(displayBoard(board), blankSquare)
+	fmt.Println(checkBoard(board, size))
 }
