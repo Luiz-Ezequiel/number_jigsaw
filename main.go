@@ -23,12 +23,12 @@ func move(board [][]string, blankSquare EmptySquare, size int, direction string)
 	switch direction {
 	case "w":
 		if blankSquare.yCord == 0 {
-			return board, blankSquare, fmt.Errorf("can't move down")
+			return board, blankSquare, fmt.Errorf("can't move up")
 		}
 		newY, newX = blankSquare.yCord - 1, blankSquare.xCord
 	case "s":
 		if blankSquare.yCord == size - 1 {
-			return board, blankSquare, fmt.Errorf("can't move up")
+			return board, blankSquare, fmt.Errorf("can't move down")
 		}
 		newY, newX = blankSquare.yCord + 1, blankSquare.xCord
 	case "a":
@@ -87,7 +87,7 @@ func checkBoard(board [][]string, size int) bool {
 	for i := 0; i < len(board); i++ {
 		for j := 0; j < len(board[i]); j++ {
 			if puzzleSolved[i][j] != board[i][j]{
-				result = false
+				return false 
 			}
 		}
 	}
