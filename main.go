@@ -2,12 +2,20 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 )
 
 type EmptySquare struct {
 	yCord int
 	xCord int
 }
+
+const validMoves = "wasd"
+
+func randomMove() string {
+	b := validMoves[rand.Intn(len(validMoves))]
+	return string(b)
+  }
 
 // Move numbers around the empty square based on imput
 func move(board [][]string, blankSquare EmptySquare, size int, direction string) ([][]string, EmptySquare, error) {
@@ -111,6 +119,14 @@ func gameLoop(board [][]string, blankSquare EmptySquare, size int) ([][]string, 
 	return board, isSolved
 }
 
+func shuffleBoard(board [][]string, blankSquare EmptySquare, size int) ([][]string, EmptySquare) {
+	for i := 0; i < 1500; i++ {
+		randomMove := randomMove()	
+		board, blankSquare, _ = move(board, blankSquare, size, randomMove)
+	} 
+	return board, blankSquare
+}
+
 func main() {
 	size := 0
 	fmt.Print("Select the size of the board(>=3): ")
@@ -119,6 +135,7 @@ func main() {
 	}
 
 	board, blankSquare := createBoard(size)
+	board, blankSquare = shuffleBoard(board, blankSquare, size) 
 
 	_, result := gameLoop(board, blankSquare, size)
 	if result {
