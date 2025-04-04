@@ -94,7 +94,7 @@ func checkBoard(board [][]string, size int) bool {
 	return result
 }
 
-func gameLoop(board [][]string, blankSquare EmptySquare, size int) ([][]string, bool) {
+func gameLoop(board [][]string, blankSquare EmptySquare, size int) bool {
 	fmt.Println(displayBoard(board))
 
 	var err error 
@@ -112,11 +112,11 @@ func gameLoop(board [][]string, blankSquare EmptySquare, size int) ([][]string, 
 			fmt.Println(displayBoard(board))
 			isSolved = checkBoard(board, size)
 			if isSolved {
-				return board, isSolved
+				return isSolved
 			}
 		}
 	}
-	return board, isSolved
+	return isSolved
 }
 
 func shuffleBoard(board [][]string, blankSquare EmptySquare, size int) ([][]string, EmptySquare) {
@@ -137,7 +137,7 @@ func main() {
 	board, blankSquare := createBoard(size)
 	board, blankSquare = shuffleBoard(board, blankSquare, size) 
 
-	_, result := gameLoop(board, blankSquare, size)
+	result := gameLoop(board, blankSquare, size)
 	if result {
 		fmt.Print("Congratulations!! You won :)")
 	} else {
