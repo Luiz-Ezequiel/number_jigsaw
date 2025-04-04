@@ -13,22 +13,22 @@ type EmptySquare struct {
 func move(board [][]string, blankSquare EmptySquare, size int, direction string) ([][]string, EmptySquare, error) {
 	var newX, newY int  
 	switch direction {
-	case "s":
+	case "w":
 		if blankSquare.yCord == 0 {
 			return board, blankSquare, fmt.Errorf("can't move down")
 		}
 		newY, newX = blankSquare.yCord - 1, blankSquare.xCord
-	case "w":
+	case "s":
 		if blankSquare.yCord == size - 1 {
 			return board, blankSquare, fmt.Errorf("can't move up")
 		}
 		newY, newX = blankSquare.yCord + 1, blankSquare.xCord
-	case "d":
+	case "a":
 		if blankSquare.xCord == 0 {
 			return board, blankSquare, fmt.Errorf("can't move left")
 		}
 		newY, newX = blankSquare.yCord, blankSquare.xCord - 1
-	case "a":
+	case "d":
 		if blankSquare.xCord == size - 1 {
 			return board, blankSquare, fmt.Errorf("can't move right")
 		}
@@ -86,13 +86,44 @@ func checkBoard(board [][]string, size int) bool {
 	return result
 }
 
+func gameLoop(board [][]string, blankSquare EmptySquare, size int) ([][]string, bool) {
+	fmt.Println(displayBoard(board))
+
+	var err error 
+	input := ""
+	isSolved := false
+
+	for input != "q" {
+		fmt.Scan(&input)
+		 
+		if input == "w" || input == "a" || input == "s" || input == "d" {
+			board, blankSquare, err = move(board, blankSquare, size, input)
+			if err != nil {
+				fmt.Println("Error:", err)
+			}
+			fmt.Println(displayBoard(board))
+			isSolved = checkBoard(board, size)
+			if isSolved {
+				return board, isSolved
+			}
+		}
+	}
+	return board, isSolved
+}
+
 func main() {
-	size := 3
+	size := 0
+	fmt.Print("Select the size of the board(>=3): ")
+	for size <= 2 {
+		fmt.Scan(&size)
+	}
+
 	board, blankSquare := createBoard(size)
-	// board, blankSquare, err := move(board, blankSquare, size, "s")
-	// if err != nil{
-	// 	fmt.Print(err)
-	// }
-	fmt.Println(displayBoard(board), blankSquare)
-	fmt.Println(checkBoard(board, size))
+
+	_, result := gameLoop(board, blankSquare, size)
+	if result {
+		fmt.Print("Congratulations!! You won :)")
+	} else {
+		fmt.Print("Quitter. :P!")
+	}
 }
